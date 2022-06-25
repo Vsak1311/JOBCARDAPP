@@ -41,6 +41,8 @@ Partial Class frmJobListing
         Me.PdfExport1 = New Spire.DataExport.PDF.PDFExport()
         Me.CellExport1 = New Spire.DataExport.XLS.CellExport()
         Me.BtnLogout = New System.Windows.Forms.Button()
+        Me.BtnRefresh = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'ucJobList
@@ -48,6 +50,7 @@ Partial Class frmJobListing
         Me.ucJobList.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.ucJobList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.c1, Me.c2, Me.c3, Me.c4, Me.c5, Me.c6, Me.c7, Me.c8, Me.c9})
         Me.ucJobList.ForeColor = System.Drawing.SystemColors.MenuText
+        Me.ucJobList.FullRowSelect = True
         Me.ucJobList.GridLines = True
         Me.ucJobList.HideSelection = False
         Me.ucJobList.HoverSelection = True
@@ -118,6 +121,9 @@ Partial Class frmJobListing
         Me.btnNewJob.BackColor = System.Drawing.SystemColors.Window
         Me.btnNewJob.BackgroundImage = CType(resources.GetObject("btnNewJob.BackgroundImage"), System.Drawing.Image)
         Me.btnNewJob.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnNewJob.FlatAppearance.BorderColor = System.Drawing.Color.White
+        Me.btnNewJob.FlatAppearance.BorderSize = 0
+        Me.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnNewJob.ForeColor = System.Drawing.Color.Transparent
         Me.btnNewJob.Location = New System.Drawing.Point(13, 8)
         Me.btnNewJob.Name = "btnNewJob"
@@ -131,6 +137,7 @@ Partial Class frmJobListing
         Me.BtnPdf.BackColor = System.Drawing.Color.Transparent
         Me.BtnPdf.BackgroundImage = CType(resources.GetObject("BtnPdf.BackgroundImage"), System.Drawing.Image)
         Me.BtnPdf.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.BtnPdf.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.BtnPdf.Location = New System.Drawing.Point(1066, 10)
         Me.BtnPdf.Name = "BtnPdf"
         Me.BtnPdf.Size = New System.Drawing.Size(61, 40)
@@ -142,6 +149,7 @@ Partial Class frmJobListing
         Me.btnExcel.BackColor = System.Drawing.Color.Transparent
         Me.btnExcel.BackgroundImage = CType(resources.GetObject("btnExcel.BackgroundImage"), System.Drawing.Image)
         Me.btnExcel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnExcel.Location = New System.Drawing.Point(1133, 9)
         Me.btnExcel.Name = "btnExcel"
         Me.btnExcel.Size = New System.Drawing.Size(58, 40)
@@ -153,6 +161,7 @@ Partial Class frmJobListing
         Me.Button4.BackColor = System.Drawing.Color.Transparent
         Me.Button4.BackgroundImage = CType(resources.GetObject("Button4.BackgroundImage"), System.Drawing.Image)
         Me.Button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button4.Location = New System.Drawing.Point(1197, 10)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(53, 36)
@@ -209,11 +218,37 @@ Partial Class frmJobListing
         Me.BtnLogout.BackColor = System.Drawing.Color.Transparent
         Me.BtnLogout.BackgroundImage = CType(resources.GetObject("BtnLogout.BackgroundImage"), System.Drawing.Image)
         Me.BtnLogout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.BtnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.BtnLogout.Location = New System.Drawing.Point(1257, 9)
         Me.BtnLogout.Name = "BtnLogout"
         Me.BtnLogout.Size = New System.Drawing.Size(35, 37)
         Me.BtnLogout.TabIndex = 6
         Me.BtnLogout.UseVisualStyleBackColor = False
+        '
+        'BtnRefresh
+        '
+        Me.BtnRefresh.BackColor = System.Drawing.SystemColors.Window
+        Me.BtnRefresh.BackgroundImage = CType(resources.GetObject("BtnRefresh.BackgroundImage"), System.Drawing.Image)
+        Me.BtnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.BtnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.BtnRefresh.ForeColor = System.Drawing.Color.Transparent
+        Me.BtnRefresh.Location = New System.Drawing.Point(1274, 107)
+        Me.BtnRefresh.Name = "BtnRefresh"
+        Me.BtnRefresh.Padding = New System.Windows.Forms.Padding(200)
+        Me.BtnRefresh.Size = New System.Drawing.Size(31, 29)
+        Me.BtnRefresh.TabIndex = 7
+        Me.BtnRefresh.UseVisualStyleBackColor = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Sitka Heading", 11.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.Red
+        Me.Label2.Location = New System.Drawing.Point(9, 115)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(233, 21)
+        Me.Label2.TabIndex = 149
+        Me.Label2.Text = "*   Double click on the row to Edit"
         '
         'frmJobListing
         '
@@ -221,6 +256,8 @@ Partial Class frmJobListing
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1317, 684)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.BtnRefresh)
         Me.Controls.Add(Me.BtnLogout)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.btnExcel)
@@ -254,4 +291,6 @@ Partial Class frmJobListing
     Friend WithEvents CellExport1 As Spire.DataExport.XLS.CellExport
     Private WithEvents PdfExport1 As Spire.DataExport.PDF.PDFExport
     Friend WithEvents BtnLogout As Button
+    Friend WithEvents BtnRefresh As Button
+    Friend WithEvents Label2 As Label
 End Class

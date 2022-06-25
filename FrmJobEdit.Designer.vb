@@ -1021,7 +1021,6 @@ Partial Class FrmJobEdit
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1248, 702)
-        Me.Controls.Add(Me.pnlChk)
         Me.Controls.Add(Me.btnDel)
         Me.Controls.Add(Me.BtnUpdate)
         Me.Controls.Add(Me.Label1)
@@ -1067,6 +1066,7 @@ Partial Class FrmJobEdit
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.PnlSettlement)
         Me.Controls.Add(Me.pnlCustomer)
+        Me.Controls.Add(Me.pnlChk)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "FrmJobEdit"
         Me.Text = "Job Master Edit"

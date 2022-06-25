@@ -112,6 +112,12 @@
     <Compile Include="FrmCustomers.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FrmItemMastervb.Designer.vb">
+      <DependentUpon>FrmItemMastervb.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FrmItemMastervb.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmJobEdit.Designer.vb">
       <DependentUpon>FrmJobEdit.vb</DependentUpon>
     </Compile>
@@ -171,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCustomers.resx">
       <DependentUpon>FrmCustomers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmItemMastervb.resx">
+      <DependentUpon>FrmItemMastervb.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmJobEdit.resx">
       <DependentUpon>FrmJobEdit.vb</DependentUpon>

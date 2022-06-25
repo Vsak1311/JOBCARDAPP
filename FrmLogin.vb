@@ -81,10 +81,15 @@ Public Class FrmLogin
     End Sub
 
     Private Sub txtUserName_KeyDown(sender As Object, e As KeyEventArgs) Handles txtUserName.KeyDown
+        Dim user = txtUserName.Text.Trim
+
         If e.KeyCode = Keys.Enter Then
+            txtUserName.Text = user
             txtPwd.Focus()
         End If
     End Sub
 
+    Private Sub txtUserName_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtUserName.KeyPress
 
+    End Sub
 End Class

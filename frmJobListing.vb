@@ -13,7 +13,7 @@ Public Class frmJobListing
     Dim cnn As New SqlClient.SqlConnection
     Dim cmd As New SqlClient.SqlCommand
     Dim conn As String = ConfigurationManager.ConnectionStrings("Conn").ConnectionString
-    Public jobid As Int32
+    Public jobno As Int32
     Dim JobCode As String
     Private Sub frmJobListing_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         filldata()
@@ -27,6 +27,7 @@ Public Class frmJobListing
 
             TBD.Clear()
             Adapter.Fill(TBD)
+            ucJobList.Refresh()
             If TBD IsNot Nothing AndAlso TBD.Rows.Count > 0 Then
                 For Each row As DataRow In TBD.Rows
                     Dim lst As ListViewItem
@@ -40,6 +41,8 @@ Public Class frmJobListing
             End If
 
             sqlCon.Close()
+
+
 
         End Using
     End Sub
@@ -146,6 +149,8 @@ Public Class frmJobListing
     End Sub
 
     Private Sub ucJobList_DoubleClick(sender As Object, e As EventArgs) Handles ucJobList.DoubleClick
+        JobCode = ucJobList.Items(ucJobList.FocusedItem.Index).SubItems(1).Text
+        jobNo = Convert.ToInt32(JobCode)
         Dim result As DialogResult = MessageBox.Show("Do You Really Want to Edit the Data.", "Edit Data", MessageBoxButtons.YesNoCancel)
         If result = DialogResult.Cancel Then
             Me.Show()
@@ -163,8 +168,22 @@ Public Class frmJobListing
 
     Private Sub ucJobList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ucJobList.SelectedIndexChanged
 
-        JobCode = ucJobList.Items(ucJobList.FocusedItem.Index).SubItems(1).Text
-        Jobid = Convert.ToInt32(JobCode)
+        'JobCode = ucJobList.Items(ucJobList.FocusedItem.Index).SubItems(1).Text
+        'Jobid = Convert.ToInt32(JobCode)
     End Sub
 
+    Private Sub frmJobListing_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+        'ucJobList.Clear()
+        'filldata()
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
+        'ucJobList.Clear()
+        filldata()
+    End Sub
+
+    Private Sub BtnRefresh_Click(sender As Object, e As EventArgs) Handles BtnRefresh.Click
+        ucJobList.Refresh()
+        filldata()
+    End Sub
 End Class

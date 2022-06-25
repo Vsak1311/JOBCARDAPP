@@ -8,7 +8,7 @@ Public Class FrmJobEdit
     Dim cnn As New SqlClient.SqlConnection
     Dim cmd As New SqlClient.SqlCommand
     Dim conn As String = ConfigurationManager.ConnectionStrings("Conn").ConnectionString
-    Dim jobid = frmJobListing.jobid
+    Dim jobid = frmJobListing.jobno
     Dim JobCode As Int32
     Dim CustID As Int32
     Dim CustName As String
@@ -31,8 +31,8 @@ Public Class FrmJobEdit
     Dim Disc As Decimal
     Dim tot As Decimal
     Private Sub FrmJobEdit_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        clear()
+        Dim jobid = frmJobListing.jobno
+        Clear()
         LoadMData()
         LoadCdata()
         LoadChkData()
@@ -65,6 +65,7 @@ Public Class FrmJobEdit
 
     End Sub
     Private Sub LoadMData()
+        Dim jobid = frmJobListing.jobno
         Using sqlCon = New SqlConnection(conn)
             sqlCon.Open()
             Dim da As New SqlClient.SqlDataAdapter
@@ -110,7 +111,7 @@ Public Class FrmJobEdit
 
     End Sub
 
-    Private Sub LoadChkData()
+    Private Sub LoadChkID()
         Using sqlCon = New SqlConnection(conn)
             sqlCon.Open()
             Dim da As New SqlClient.SqlDataAdapter
@@ -121,6 +122,30 @@ Public Class FrmJobEdit
 
                 dgvChk.DataSource = dt
 
+            End If
+
+            sqlCon.Close()
+
+
+        End Using
+    End Sub
+
+    Private Sub LoadChkData()
+        Dim jobid = frmJobListing.jobno
+        Using sqlCon = New SqlConnection(conn)
+            sqlCon.Open()
+            Dim da As New SqlClient.SqlDataAdapter
+            da.SelectCommand = New SqlClient.SqlCommand("select ITEM,CONDITION from tblchecklist where jobid = '" & jobid & "'", sqlCon)
+
+            Dim dt As New DataTable
+            Dim dat As New DataTable
+
+            da.Fill(dt)
+            If dt.Rows.Count > 0 Then
+
+
+
+                dgvChk.DataSource = dt
             End If
 
             sqlCon.Close()
@@ -533,17 +558,27 @@ Public Class FrmJobEdit
     Private Sub Updatechk()
         Using sqlCon = New SqlConnection(conn)
             sqlCon.Open()
-
+            Dim chkid = 0
 
 
             For Each rw As DataGridViewRow In dgvChk.Rows
                 If rw.Cells("Item").Value IsNot Nothing Then
+                    If chkid = 0 Then
+                        Dim cq As String = "select top(1) chkid from TblChecklist where JobId =" & jobid
+                        Dim cqry As New SqlClient.SqlCommand(cq, sqlCon)
+                        Dim obj As Object = cqry.ExecuteScalar()
+                        chkid = CLng(obj.ToString())
+                    Else
+                        chkid += 1
+                    End If
 
-                    Dim qry As String = "update TblChecklist set Item=@Item, Condition= @Cond where JobId = @Jobid"
+
+                    Dim qry As String = "update TblChecklist set Item=@Item, Condition= @Cond where JobId = @Jobid and chkid = @chkid"
                     Dim ins As New SqlClient.SqlCommand(qry, sqlCon)
                     With ins.Parameters
 
                         .AddWithValue("JobId", jobid)
+                        .AddWithValue("chkid", chkid)
                         .AddWithValue("Item", rw.Cells("Item").Value)
                         .AddWithValue("Cond", rw.Cells("Condition").Value)
                     End With
@@ -555,5 +590,69 @@ Public Class FrmJobEdit
             Next
         End Using
 
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.Hide()
+        frmJobListing.Show()
+
+
+    End Sub
+
+    Private Sub FrmJobEdit_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
+
+        Dim jobid = frmJobListing.jobno
+        Clear()
+        LoadMData()
+        LoadCdata()
+        LoadChkData()
+        LoadSData()
+    End Sub
+
+    Private Sub btnDel_Click(sender As Object, e As EventArgs) Handles btnDel.Click
+        Dim result As DialogResult = MessageBox.Show("Do You Really Want to Delete the Data.", "Delete", MessageBoxButtons.YesNoCancel)
+        If result = DialogResult.Cancel Then
+            Me.Show()
+        ElseIf result = DialogResult.No Then
+            Me.Show()
+        ElseIf result = DialogResult.Yes Then
+            'MessageBox.Show("Yes pressed")
+            DelM()
+            Delchk()
+        End If
+
+    End Sub
+
+    Private Sub DelM()
+        Using sqlCon = New SqlConnection(conn)
+            sqlCon.Open()
+            Dim qry As String = "delete from tbljobmaster where jobid = @Jobid"
+            Dim ins As New SqlClient.SqlCommand(qry, sqlCon)
+            With ins.Parameters
+
+                .AddWithValue("JobId", jobid)
+                sqlCon.Close()
+            End With
+
+
+
+        End Using
+
+    End Sub
+
+    Private Sub Delchk()
+        Using sqlCon = New SqlConnection(conn)
+            sqlCon.Open()
+            Dim qry As String = "delete from tblcheklist where jobid = @Jobid"
+            Dim ins As New SqlClient.SqlCommand(qry, sqlCon)
+            With ins.Parameters
+
+                .AddWithValue("JobId", jobid)
+                sqlCon.Close()
+            End With
+
+
+
+        End Using
     End Sub
 End Class
