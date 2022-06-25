@@ -73,7 +73,7 @@ Partial Class FrmNewJob
         Me.BtnPrintBarcode = New System.Windows.Forms.Button()
         Me.lblCnt = New System.Windows.Forms.Label()
         Me.txtCopies = New System.Windows.Forms.TextBox()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.dgvCustHistory = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BtnSave = New System.Windows.Forms.Button()
@@ -90,6 +90,7 @@ Partial Class FrmNewJob
         Me.RIYALOERPDB100DataSetBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.BtnAddLoc = New System.Windows.Forms.Button()
         Me.pnlCustomer = New System.Windows.Forms.Panel()
+        Me.btnCustadd = New System.Windows.Forms.Button()
         Me.BtnCustClose = New System.Windows.Forms.Button()
         Me.chksms = New System.Windows.Forms.CheckBox()
         Me.chkEmail = New System.Windows.Forms.CheckBox()
@@ -119,7 +120,7 @@ Partial Class FrmNewJob
         Me.BtnClose = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.PnlSettlement.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvCustHistory, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlChk.SuspendLayout()
         CType(Me.dgvChk, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RIYALOERPDB100DataSet, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -598,13 +599,13 @@ Partial Class FrmNewJob
         Me.txtCopies.Size = New System.Drawing.Size(64, 20)
         Me.txtCopies.TabIndex = 50
         '
-        'DataGridView1
+        'dgvCustHistory
         '
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Location = New System.Drawing.Point(28, 459)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(1082, 184)
-        Me.DataGridView1.TabIndex = 51
+        Me.dgvCustHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvCustHistory.Location = New System.Drawing.Point(28, 459)
+        Me.dgvCustHistory.Name = "dgvCustHistory"
+        Me.dgvCustHistory.Size = New System.Drawing.Size(1097, 227)
+        Me.dgvCustHistory.TabIndex = 51
         '
         'Label1
         '
@@ -753,6 +754,7 @@ Partial Class FrmNewJob
         'pnlCustomer
         '
         Me.pnlCustomer.BackColor = System.Drawing.Color.Cornsilk
+        Me.pnlCustomer.Controls.Add(Me.btnCustadd)
         Me.pnlCustomer.Controls.Add(Me.BtnCustClose)
         Me.pnlCustomer.Controls.Add(Me.chksms)
         Me.pnlCustomer.Controls.Add(Me.chkEmail)
@@ -780,10 +782,21 @@ Partial Class FrmNewJob
         Me.pnlCustomer.Controls.Add(Me.txtCustCode)
         Me.pnlCustomer.Controls.Add(Me.lblCustCode)
         Me.pnlCustomer.Controls.Add(Me.BtnClose)
-        Me.pnlCustomer.Location = New System.Drawing.Point(12, 78)
+        Me.pnlCustomer.Location = New System.Drawing.Point(12, 24)
         Me.pnlCustomer.Name = "pnlCustomer"
-        Me.pnlCustomer.Size = New System.Drawing.Size(1130, 418)
+        Me.pnlCustomer.Size = New System.Drawing.Size(1130, 472)
         Me.pnlCustomer.TabIndex = 60
+        '
+        'btnCustadd
+        '
+        Me.btnCustadd.BackgroundImage = CType(resources.GetObject("btnCustadd.BackgroundImage"), System.Drawing.Image)
+        Me.btnCustadd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btnCustadd.Font = New System.Drawing.Font("Sylfaen", 9.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCustadd.Location = New System.Drawing.Point(97, 7)
+        Me.btnCustadd.Name = "btnCustadd"
+        Me.btnCustadd.Size = New System.Drawing.Size(67, 45)
+        Me.btnCustadd.TabIndex = 109
+        Me.btnCustadd.UseVisualStyleBackColor = True
         '
         'BtnCustClose
         '
@@ -1065,7 +1078,7 @@ Partial Class FrmNewJob
         Me.Controls.Add(Me.BtnSave)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.DataGridView1)
+        Me.Controls.Add(Me.dgvCustHistory)
         Me.Controls.Add(Me.txtCopies)
         Me.Controls.Add(Me.lblCnt)
         Me.Controls.Add(Me.BtnPrintBarcode)
@@ -1112,7 +1125,7 @@ Partial Class FrmNewJob
         Me.Text = "New Job Entry"
         Me.PnlSettlement.ResumeLayout(False)
         Me.PnlSettlement.PerformLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvCustHistory, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlChk.ResumeLayout(False)
         Me.pnlChk.PerformLayout()
         CType(Me.dgvChk, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1162,7 +1175,7 @@ Partial Class FrmNewJob
     Friend WithEvents BtnPrintBarcode As Button
     Friend WithEvents lblCnt As Label
     Friend WithEvents txtCopies As TextBox
-    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents dgvCustHistory As DataGridView
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents BtnSave As Button
@@ -1219,4 +1232,5 @@ Partial Class FrmNewJob
     Friend WithEvents Label18 As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents BtnCustClose As Button
+    Friend WithEvents btnCustadd As Button
 End Class

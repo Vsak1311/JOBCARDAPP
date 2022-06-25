@@ -31,6 +31,12 @@ Public Class FrmNewJob
     Dim Disc As Decimal
     Dim tot As Decimal
 
+    Dim nTID As Int32 = 0
+    Dim nBID As Int32 = 0
+    Dim nCid As Int32 = 0
+    Dim nLocId As Int32 = 0
+    Dim nCustID As Int32 = 0
+
 
     'FrmJOBMAster
     Private Sub FrmNewJob_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -177,6 +183,7 @@ Public Class FrmNewJob
 
             Try
                 Dim obj As Object = ins.ExecuteScalar()
+                nCid = Cid
                 MessageBox.Show("Complaint Added!!")
 
 
@@ -218,6 +225,7 @@ Public Class FrmNewJob
 
             Try
                 Dim obj As Object = ins.ExecuteScalar()
+                nBID = Cid
                 MessageBox.Show("Brand Added!!")
                 pirntID = CLng(obj.ToString)
 
@@ -256,6 +264,7 @@ Public Class FrmNewJob
 
             Try
                 Dim obj As Object = ins.ExecuteScalar()
+                nTID = Cid
                 MessageBox.Show("Technician Added!!")
                 pirntID = CLng(obj.ToString)
 
@@ -302,6 +311,7 @@ Public Class FrmNewJob
 
             Try
                 Dim obj As Object = ins.ExecuteScalar()
+                nLocId = Cid
                 MessageBox.Show("Location Added!!")
                 pirntID = CLng(obj.ToString)
 
@@ -323,22 +333,37 @@ Public Class FrmNewJob
     Private Sub cmbCustomer_Leave(sender As Object, e As EventArgs) Handles cmbCustomer.Leave
 
         CustID = Convert.ToInt32(cmbCustomer.SelectedValue.ToString())
+        Using sqlCon = New SqlConnection(conn)
+            sqlCon.Open()
+            Dim Adapter As New SqlClient.SqlDataAdapter
+            Adapter.SelectCommand = New SqlClient.SqlCommand("select [JOB DATE],[JOB NO],[CUSTOMER NAME],[PHONE NO],[BRAND],[PRODUCT NAME],[SERIAL NO],[COMPLAINT],[CURRENT STATUS] from vw_JobMaster_Cust where  [CUSTOMER CODE] = " & CustID, sqlCon)
+            Dim TBD As New DataTable
+            Adapter.Fill(TBD)
+            If TBD.Rows.Count > 0 Then
+                dgvCustHistory.DataSource = TBD
+            Else
+                Cid = 0
+            End If
+
+            sqlCon.Close()
+
+        End Using
+
     End Sub
     Private Sub cmbtech_Leave(sender As Object, e As EventArgs) Handles cmbtech.Leave
-        TID = Convert.ToInt32(cmbtech.SelectedValue.ToString())
+
+
     End Sub
     Private Sub cmbBrand_Leave(sender As Object, e As EventArgs) Handles cmbBrand.Leave
-        BID = Convert.ToInt32(cmbBrand.SelectedValue.ToString())
+
+
     End Sub
     Private Sub CmbComplaint_Leave(sender As Object, e As EventArgs) Handles CmbComplaint.Leave
-        Cid = Convert.ToInt32(CmbComplaint.SelectedValue.ToString())
+
+
     End Sub
     Private Sub cmbLoc_Leave(sender As Object, e As EventArgs) Handles cmbLoc.Leave
-        If cmbLoc.SelectedValue.ToString() Is Nothing Then
-            LocId = 1
-        Else
-            LocId = Convert.ToInt32(cmbLoc.SelectedValue.ToString())
-        End If
+
 
     End Sub
 
@@ -353,8 +378,40 @@ Public Class FrmNewJob
             PnlSettlement.Visible = False
 
         End If
-        statusId = Convert.ToInt32(cmbStatus.SelectedValue.ToString())
+        'statusId = Convert.ToInt32(cmbStatus.SelectedValue.ToString())
 
+    End Sub
+
+
+    Private Sub LoadIDs()
+
+        statusId = Convert.ToInt32(cmbStatus.SelectedValue.ToString())
+        If nCustID = 0 Then
+            CustID = Convert.ToInt32(cmbCustomer.SelectedValue.ToString())
+        Else
+            CustID = nCustID
+        End If
+        If nLocId = 0 Then
+            LocId = Convert.ToInt32(cmbLoc.SelectedValue.ToString())
+        Else
+            LocId = nLocId
+        End If
+
+        If nCid = 0 Then
+            Cid = Convert.ToInt32(CmbComplaint.SelectedValue.ToString())
+        Else
+            Cid = nCid
+        End If
+        If nBID = 0 Then
+            BID = Convert.ToInt32(cmbBrand.SelectedValue.ToString())
+        Else
+            BID = nBID
+        End If
+        If nTID = 0 Then
+            TID = Convert.ToInt32(cmbtech.SelectedValue.ToString())
+        Else
+            TID = nTID
+        End If
     End Sub
 
     'Other functions
@@ -409,7 +466,7 @@ Public Class FrmNewJob
     Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles txtAddress.TextChanged
 
     End Sub
-    Private Sub BtnClose_Click_1(sender As Object, e As EventArgs) Handles BtnClose.Click
+    Private Sub BtnClose_Click_1(sender As Object, e As EventArgs) Handles BtnClose.Click, Button1.Click
         frmJobListing.Show()
         Me.Hide()
 
@@ -423,6 +480,8 @@ Public Class FrmNewJob
     End Sub
 
     Private Sub savedata()
+
+        LoadIDs()
         insjob()
         insChk()
 
@@ -467,7 +526,7 @@ Public Class FrmNewJob
                 .AddWithValue("Cid", Cid)
                 .AddWithValue("Year", txtYear.Text.Trim())
                 .AddWithValue("Exp_Del_date", dtpExpDel.Value)
-                .AddWithValue("JobDate", dtpExpDel.Value)
+                .AddWithValue("JobDate", DtpJobDate.Value)
                 .AddWithValue("LocId", LocId)
                 .AddWithValue("StatusID", statusId)
                 .AddWithValue("Notes", txtNotes.Text.Trim())
@@ -575,5 +634,81 @@ Public Class FrmNewJob
 
     End Sub
 
+    Private Sub insCust()
+        Dim Sidd As Int32
+        Dim pirntID As Int32
+        Using sqlCon = New SqlConnection(conn)
+            sqlCon.Open()
 
+            Dim Adapter As New SqlClient.SqlDataAdapter
+            Adapter.SelectCommand = New SqlClient.SqlCommand("exec Get_Transaction_ID ' Custid '", sqlCon)
+            Dim TBD As New DataSet
+            Adapter.Fill(TBD)
+            If TBD.Tables(0).Rows.Count > 0 Then
+                Sidd = TBD.Tables(0).Rows(0).Item(0)
+            Else
+                Sidd = 0
+            End If
+            Dim whtsapp, email, sms As Boolean
+            If chkWhatsapp.Checked = True Then
+                whtsapp = True
+            Else
+                whtsapp = False
+            End If
+            If chkEmail.Checked = True Then
+                email = True
+            Else
+                email = False
+            End If
+            If chksms.Checked = True Then
+                sms = True
+            Else
+                sms = False
+            End If
+
+
+            Dim qry As String = "Insert into TblCustomer (  CustCode, CustName, Mobile, Telephone, Address, LocId, State, Country, Email, IsWhatsapp, IsEmail, IsSms) 
+                                 VALUES (@CustCode, @CustName, @Mobile, @Telephone, @Address, @LocId, @State, @Country, @Email,@IsWhatsapp, @IsEmail,@IsSms);SELECT SCOPE_IDENTITY()"
+            Dim ins As New SqlClient.SqlCommand(qry, sqlCon)
+            With ins.Parameters
+                .AddWithValue("CustCode", Sidd)
+                .AddWithValue("CustName", txtCustName.Text.Trim())
+                .AddWithValue("Mobile", txtmob.Text.Trim())
+                .AddWithValue("Telephone", txttele.Text.Trim())
+                .AddWithValue("Address", txtAddress.Text.Trim())
+                .AddWithValue("LocId", LocId)
+                .AddWithValue("State", txtState.Text.Trim())
+                .AddWithValue("Country", txtCountry.Text.Trim())
+                .AddWithValue("Email", txtEmail.Text.Trim())
+                .AddWithValue("IsWhatsapp", whtsapp)
+                .AddWithValue("IsEmail", email)
+                .AddWithValue("IsSms", sms)
+            End With
+
+            Try
+                Dim obj As Object = ins.ExecuteScalar()
+                nCustID = Sidd
+                pirntID = CLng(obj.ToString)
+            Catch ex As Exception
+                pirntID = 0
+            End Try
+
+            sqlCon.Close()
+            MessageBox.Show("Customer Added Succesfully!!")
+            pnlCustomer.Visible = False
+
+
+        End Using
+    End Sub
+
+    Private Sub btnCustadd_Click(sender As Object, e As EventArgs) Handles btnCustadd.Click
+        insCust()
+        cmbCustomer.Text = txtCustName.Text.Trim()
+
+    End Sub
+
+    Private Sub btnDel_Click(sender As Object, e As EventArgs) Handles btnDel.Click
+
+
+    End Sub
 End Class
